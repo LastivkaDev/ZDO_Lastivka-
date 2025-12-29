@@ -1,213 +1,168 @@
+<?php
+session_start();
+
+// Адмін
+define('ADMIN_EMAIL', 'lisovecartem333@gmail.com');
+define('ADMIN_PASSWORD', 'admin_zdo_2024');
+
+// Створюємо папки
+if(!is_dir('uploads')) mkdir('uploads', 0777, true);
+if(!is_dir('uploads/photos')) mkdir('uploads/photos', 0777, true);
+if(!is_file('uploads/files.json')) file_put_contents('uploads/files.json', '[]');
+if(!is_file('uploads/news.json')) file_put_contents('uploads/news.json', '[]');
+if(!is_file('uploads/comments.json')) file_put_contents('uploads/comments.json', '[]');
+
+// Логін
+if(isset($_POST['login'])) {
+    $email = $_POST['email'] ?? '';
+    $pass = $_POST['password'] ?? '';
+    if($email === ADMIN_EMAIL && $pass === ADMIN_PASSWORD){
+        $_SESSION['isAdmin'] = true;
+    } else {
+        $login_error = "Невірний логін або пароль";
+    }
+}
+
+// Вихід
+if(isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: index.php");
+    exit;
+}
+
+// Завантаження файлів
+if(isset($_POST['upload']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) {
+    $fileTitle = $_POST['fileTitle'] ?? '';
+    $fileDesc = $_POST['fileDesc'] ?? '';
+    $fileCat = $_POST['fileCat'] ?? '';
+    
+    if(isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+        $filename = basename($_FILES['file']['name']);
+        $target = "uploads/" . time() . "_" . preg_replace('/\s+/', '_', $filename);
+        if(move_uploaded_file($_FILES['file']['tmp_name'], $target)){
+            $files = json_decode(file_get_contents('uploads/files.json'), true);
+            $files[] = [
+                'title' => htmlspecialchars($fileTitle),
+                'desc' => htmlspecialchars($fileDesc),
+                'cat' => htmlspecialchars($fileCat),
+                'path' => $target,
+                'date' => date("d.m.Y H:i")
+            ];
+            file_put_contents('uploads/files.json', json_encode($files, JSON_PRETTY_PRINT));
+            $upload_success = "Файл успішно додано!";
+        }
+    }
+}
+
+// Завантаження фото
+if(isset($_POST['uploadPhoto']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) {
+    if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0){
+        $filename = basename($_FILES['photo']['name']);
+        $target = "uploads/photos/" . time() . "_" . preg_replace('/\s+/', '_', $filename);
+        if(move_uploaded_file($_FILES['photo']['tmp_name'], $target)){
+            $photos = json_decode(file_get_contents('uploads/photos.json') ?? '[]', true);
+            $photos[] = ['path'=>$target,'date'=>date("d.m.Y H:i")];
+            file_put_contents('uploads/photos.json', json_encode($photos, JSON_PRETTY_PRINT));
+            $upload_success = "Фото успішно додано!";
+        }
+    }
+}
+
+// Додавання новини
+if(isset($_POST['addNews']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']){
+    $newsTitle = $_POST['newsTitle'] ?? '';
+    $newsDesc = $_POST['newsDesc'] ?? '';
+    if($newsTitle && $newsDesc){
+        $news = json_decode(file_get_contents('uploads/news.json'), true);
+        $news[] = ['title'=>htmlspecialchars($newsTitle),'desc'=>htmlspecialchars($newsDesc),'date'=>date("d.m.Y H:i")];
+        file_put_contents('uploads/news.json', json_encode($news, JSON_PRETTY_PRINT));
+        $news_success = "Новина додана!";
+    }
+}
+
+// Додавання коментаря
+if(isset($_POST['addComment'])){
+    $comment = $_POST['comment'] ?? '';
+    if($comment){
+        $comments = json_decode(file_get_contents('uploads/comments.json'), true);
+        $comments[] = ['comment'=>htmlspecialchars($comment),'date'=>date("d.m.Y H:i")];
+        file_put_contents('uploads/comments.json', json_encode($comments, JSON_PRETTY_PRINT));
+        $comment_success = "Коментар додано!";
+    }
+}
+
+// Читання даних
+$allFiles = json_decode(file_get_contents('uploads/files.json'), true);
+$allPhotos = json_decode(file_get_contents('uploads/photos.json') ?? '[]', true);
+$allNews = json_decode(file_get_contents('uploads/news.json') ?? '[]', true);
+$allComments = json_decode(file_get_contents('uploads/comments.json') ?? '[]', true);
+?>
 <!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ЗДО «Садочок Ластівка»</title>
-
-
-<meta name="google-site-verification" content="<meta name="google-site-verification" content="L3aMoZRFZU0pbWwUjJfPDd5h7hcqdM3p3z4dfj7Qqo4" />">
-
+<title>Дитячий садок ЗДО | Офіційний сайт</title>
+<meta name="google-site-verification" content="ТУТ_ПОСТАВЬ_СВІЙ_КОД_ВІД_GSC" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body{margin:0;font-family:Arial;background:#f4fdf7}
-header{background:#2ecc71;color:#fff;padding:15px;text-align:center;position:relative}
-header button{position:absolute;right:15px;top:15px;padding:8px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;cursor:pointer}
-nav{display:flex;flex-wrap:wrap;justify-content:center;background:#27ae60}
-nav button{border:none;background:none;color:#fff;padding:10px 14px;cursor:pointer}
-nav button:hover{background:rgba(255,255,255,.2)}
-.section{display:none;padding:20px}
-.section.active{display:block}
-.card{background:#fff;padding:15px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.1);margin-bottom:15px}
-iframe{width:100%;height:400px;border:none;border-radius:8px;margin-bottom:10px}
-textarea{width:100%;height:100px;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #ccc;resize:none}
-button.saveBtn{background:#27ae60;color:#fff;padding:8px 12px;border:none;border-radius:5px;cursor:pointer;margin-bottom:10px}
-footer{text-align:center;padding:15px;background:#eee}
-.hidden{display:none}
-
-/* login */
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center}
-.modal-content{background:#fff;padding:20px;border-radius:10px;width:300px}
-.modal-content input{width:100%;padding:8px;margin:10px 0}
+:root { --primary: #2E8B57; --secondary: #4a90e2; --accent: #FF6B35; --light: #f8f9fa; --dark: #2c3e50; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f7fa; color: #333; margin:0; padding:0;}
+header { background: linear-gradient(135deg, var(--primary), #3CB371); color:white; padding:10px; position:fixed; width:100%; top:0; z-index:1000;}
+header a.logo { color:white; text-decoration:none; font-weight:bold; font-size:1.5rem;}
+nav { margin-top:70px; background:white; display:flex; overflow-x:auto;}
+nav button { padding:15px 20px; border:none; background:none; cursor:pointer; font-weight:600;}
+nav button.active { border-bottom:3px solid var(--primary);}
+.container { max-width:1200px; margin:0 auto; padding:20px; margin-top:140px;}
+.section { display:none; }
+.section.active { display:block; }
+.card { background:white; padding:20px; margin-bottom:20px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.05);}
+.btn { padding:10px 20px; border:none; border-radius:50px; background:var(--accent); color:white; cursor:pointer; margin-top:10px;}
+.btn:hover { background:#e55a2b; }
+.files-list { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap:15px; margin-top:20px;}
+.file-item { background:white; padding:10px; border-left:4px solid var(--primary); border-radius:8px; display:flex; flex-direction:column; box-shadow:0 3px 10px rgba(0,0,0,0.05);}
+.photos-list { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:15px; margin-top:20px;}
+.photos-list img { width:100%; border-radius:10px; }
+.comment-item { background:white; padding:10px; margin-bottom:10px; border-left:4px solid var(--secondary); border-radius:8px; }
 </style>
 </head>
-
 <body>
-
 <header>
-<h1>ЗДО «Садочок Ластівка»</h1>
-<p>Офіційний сайт</p>
-<button onclick="openLogin()">Увійти</button>
+    <a href="#" class="logo" onclick="showTab('home')"><i class="fas fa-seedling"></i> ДИТЯЧИЙ САДОК ЗДО</a>
 </header>
-
 <nav>
-<button onclick="openTab('home')">Головна</button>
-<button onclick="openTab('news')">Новини</button>
-<button onclick="openTab('album')">Фотоальбом</button>
-<button onclick="openTab('groups')">Групи</button>
-<button onclick="openTab('schedule')">Розклад</button>
-<button onclick="openTab('collective')">Педколектив</button>
-<button onclick="openTab('inclusive')">Інклюзія</button>
-<button onclick="openTab('statut')">Статут</button>
-<button onclick="openTab('orders')">Накази</button>
-<button onclick="openTab('attestation')">Атестація</button>
+    <button class="tab-btn active" onclick="showTab('home')">Головна</button>
+    <button class="tab-btn" onclick="showTab('photo')">Фотоальбом</button>
+    <button class="tab-btn" onclick="showTab('attestation')">Атестація педагогів</button>
+    <button class="tab-btn" onclick="showTab('collective')">Педагогічний колектив</button>
+    <button class="tab-btn" onclick="showTab('statute')">Статут</button>
+    <button class="tab-btn" onclick="showTab('files')">Файли</button>
+    <button class="tab-btn" onclick="showTab('news')">Новини</button>
+    <button class="tab-btn" onclick="showTab('comments')">Обговорення</button>
+    <button class="tab-btn" onclick="showTab('admin')">Адмінка</button>
 </nav>
 
-<!-- Вкладки -->
+<div class="container">
 <div id="home" class="section active">
-<div class="card">
-<h2>Ласкаво просимо!</h2>
-<p id="homeText">Офіційний сайт ЗДО «Садочок Ластівка». Тут ви знайдете всі новини, фотоальбоми та інформацію про наш садок.</p>
-</div>
+<h1>Ласкаво просимо до нашого садочка!</h1>
+<p>Тут ви можете переглядати файли, фото, новини та коментарі.</p>
 </div>
 
-<div id="news" class="section">
-<div class="card">
-<h2>Новини та документи</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1zooffQ541chkyuKTUul2nkPjJDwirvxQ#list"></iframe>
-<p id="newsText">Останні новини садочка, оголошення та важливі документи для батьків і вихователів.</p>
+<div id="photo" class="section">
+<h1>Фотоальбом</h1>
+<div class="photos-list">
+<?php foreach($allPhotos as $p): ?>
+<img src="<?= $p['path'] ?>" alt="Фото">
+<?php endforeach; ?>
 </div>
-</div>
-
-<div id="album" class="section">
-<div class="card">
-<h2>Фотоальбом</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1IknDuijQtf-RrgZ8PtK89K1W2_tWz6xU#grid"></iframe>
-<p id="albumText">Тут ви можете переглянути фотографії наших груп та заходів.</p>
-</div>
-</div>
-
-<div id="groups" class="section">
-<div class="card">
-<h2>Групи</h2>
-<select onchange="loadGroup(this.value)">
-<option value="ZIRO">Зірочки</option>
-<option value="KRAP">Краплинки</option>
-<option value="SONE">Сонечко</option>
-<option value="SONY">Соняшник</option>
-<option value="PIZ">Пізнайко</option>
-<option value="CHOM">Чомусики</option>
-<option value="VES">Веселка</option>
-<option value="BDZ">Бджілки</option>
-</select>
-<iframe id="groupFrame"></iframe>
-<p id="groupsText">Інформація про наші групи, розклад та особливості кожної групи.</p>
-</div>
+<?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']): ?>
+<form method="post" enctype="multipart/form-data">
+<input type="file" name="photo" required>
+<button class="btn" type="submit" name="uploadPhoto">Додати фото</button>
+</form>
+<?php endif; ?>
 </div>
 
-<div id="schedule" class="section">
-<div class="card">
-<h2>Розклад занять</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1WiA4RmGSrRH29CbrXg14df5JtuYd6TeJ#list"></iframe>
-<p id="scheduleText">Розклад занять для всіх груп садочка.</p>
-</div>
-</div>
-<div id="collective" class="section">
-<div class="card">
-<h2>Педагогічний колектив</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1Fwu64LsLkIeybCPFTni-_5DgFPvtBMp7#grid"></iframe>
-<p id="collectiveText">Наші вихователі та педагогічний колектив з описом досвіду та кваліфікації.</p>
-</div>
-</div>
-
-<div id="inclusive" class="section">
-<div class="card">
-<h2>Інклюзивна освіта</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=10Q-sd76LpOaqeMxjuyNNYUhFwHMz3lRK#list"></iframe>
-<p id="inclusiveText">Інформація про інклюзивну освіту та наші спеціальні програми для дітей.</p>
-</div>
-</div>
-
-<div id="statut" class="section">
-<div class="card">
-<h2>Статут</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1fJZhnr-yTZ5Uecl4jdnkuSEDhleSx0dz#list"></iframe>
-<p id="statutText">Статут нашого закладу з усіма правилами та положеннями.</p>
-</div>
-</div>
-
-<div id="orders" class="section">
-<div class="card">
-<h2>Накази</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1ANR6bzU3viTLAgj2NSY-n6JfDlzs_9mS#list"></iframe>
-<p id="ordersText">Офіційні накази та документи адміністрації садочка.</p>
-</div>
-</div>
-
-<div id="attestation" class="section">
-<div class="card">
-<h2>Атестація педагогів</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1lQD4YsBpRtvemJlvn5xkUHF96TktZL-K#list"></iframe>
-<p id="attestationText">Інформація про атестацію педагогів та їх кваліфікаційні дані.</p>
-</div>
-</div>
-
-<footer>© ЗДО «Садочок Ластівка»</footer>
-
-<!-- LOGIN -->
-<div id="login" class="modal">
-<div class="modal-content">
-<h3>Вхід для адміністратора</h3>
-<input id="loginInput" placeholder="Введіть пароль">
-<button onclick="login()">Увійти</button>
-</div>
-</div>
-
-<script>
-let isAdmin = false;
-
-function openTab(id){
-document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
-
-function openLogin(){document.getElementById('login').style.display='flex'}
-
-function login(){
-let v=document.getElementById('loginInput').value;
-if(v==="lisovectana370@gmail.com"){
-alert("Адмін увійшов!");
-document.getElementById('login').style.display='none';
-isAdmin = true;
-enableEditing();
-}else{
-alert("Невірний пароль!");
-}
-}
-
-// Включає редагування текстів для адміна
-function enableEditing(){
-const sections = ['home','news','album','groups','schedule','collective','inclusive','statut','orders','attestation'];
-sections.forEach(sec=>{
-    const p = document.getElementById(sec+'Text');
-    const textarea = document.createElement('textarea');
-    textarea.value = p.innerText;
-    textarea.oninput = ()=> p.innerText = textarea.value;
-    const btn = document.createElement('button');
-    btn.className = "saveBtn";
-    btn.innerText = "Зберегти";
-    btn.onclick = ()=> alert("Текст збережено локально!");
-    p.parentNode.appendChild(textarea);
-    p.parentNode.appendChild(btn);
-});
-}
-
-// Групи
-const groups={
-ZIRO:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-KRAP:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-SONE:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-SONY:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-PIZ:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-CHOM:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-VES:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ",
-BDZ:"1K446--IrWQBbFOyNneDr7wFrTr164ZYZ"
-};
-
-function loadGroup(k){
-document.getElementById('groupFrame').src="https://drive.google.com/embeddedfolderview?id="+groups[k]+"#grid";
-}
-loadGroup("ZIRO");
-</script>
-
-</body>
-</html>
+<div id="attestation" class="section"><h1>Атестація педагогічних працівників</h1></div>
+<div id="collective" class="section"><h1>Педагогічний колектив</h1></div>
+<div id="statute" class="section"><h1>Статут</h1></div>
