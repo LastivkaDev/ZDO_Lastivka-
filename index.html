@@ -6,9 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ЗДО «Садочок Ластівка»</title>
 
-<!-- Google Search Console -->
-<meta name="google-site-verification" content=""L3aMoZRFZU0pbWwUjJfPDd5h7hcqdM3p3z4dfj7Qqo4" 
-    ">
+<!-- Google Site Verification -->
+<meta name="google-site-verification" content="googlef65215cea252f3e4" />
 
 <style>
 body{margin:0;font-family:Arial;background:#f4fdf7}
@@ -20,6 +19,8 @@ nav button:hover{background:rgba(255,255,255,.2)}
 .section{display:none;padding:20px}
 .section.active{display:block}
 .card{background:#fff;padding:15px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.1);margin-bottom:15px}
+textarea{width:100%;height:100px;padding:10px;margin-bottom:10px;border-radius:5px;border:1px solid #ccc;resize:none}
+button.saveBtn{background:#27ae60;color:#fff;padding:8px 12px;border:none;border-radius:5px;cursor:pointer}
 footer{text-align:center;padding:15px;background:#eee}
 .hidden{display:none}
 
@@ -27,8 +28,6 @@ footer{text-align:center;padding:15px;background:#eee}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center}
 .modal-content{background:#fff;padding:20px;border-radius:10px;width:300px}
 .modal-content input{width:100%;padding:8px;margin:10px 0}
-a{color:#27ae60;text-decoration:none}
-a:hover{text-decoration:underline}
 </style>
 </head>
 
@@ -54,105 +53,6 @@ a:hover{text-decoration:underline}
 <button class="admin hidden" onclick="openTab('admin')">Адмінка</button>
 </nav>
 
-<!-- Вкладки -->
-<div id="home" class="section active">
-<div class="card">
-<h2>Ласкаво просимо!</h2>
-<p>Офіційний сайт ЗДО «Садочок Ластівка»</p>
-<p>Цей текст видно для Google та користувачів.</p>
-</div>
-</div>
-
-<div id="news" class="section">
-<div class="card">
-<h2>Новини</h2>
-<p><a href="https://drive.google.com/drive/folders/1zooffQ541chkyuKTUul2nkPjJDwirvxQ" target="_blank">Переглянути новини</a></p>
-</div>
-</div>
-
-<div id="album" class="section">
-<div class="card">
-<h2>Фотоальбом</h2>
-<p><a href="https://drive.google.com/drive/folders/1IknDuijQtf-RrgZ8PtK89K1W2_tWz6xU" target="_blank">Переглянути фотоальбом</a></p>
-</div>
-</div>
-
-<div id="groups" class="section">
-<div class="card">
-<h2>Групи</h2>
-<ul>
-<li><a href="https://drive.google.com/drive/folders/1JGMSOMT_J2t3BaH-gb9zfTsBa0Mwcit_" target="_blank">Бджілки</a></li>
-<li><a href="https://drive.google.com/drive/folders/1x4hdq03XGAvSasfasuUZDnglTzIGeAtl" target="_blank">Веселка</a></li>
-<li><a href="https://drive.google.com/drive/folders/1NniCYxUD-PQG7C_QRuWc7xw02BMgdagk" target="_blank">Зірочки</a></li>
-<li><a href="https://drive.google.com/drive/folders/1ILclmWrIcnjUO5A0inVl1lFKYr-M0KZ2" target="_blank">Краплинки</a></li>
-<li><a href="https://drive.google.com/drive/folders/1_88DhBgMjTTY9Bnxh-HFlhyIHROHkx5B" target="_blank">Пізнайко</a></li>
-<li><a href="https://drive.google.com/drive/folders/1IaHJfVHh_g9W55Yc1ZIeGVPBQqsZxdAG" target="_blank">Сонечко</a></li>
-<li><a href="https://drive.google.com/drive/folders/16wVHEkqukh9DEyDiaW_QqjnBCH_aWxDn" target="_blank">Чомусики</a></li>
-<li><a href="https://drive.google.com/drive/folders/1cjb4QtNFRAcVbNB62YaHsp0n8L4r8wzg" target="_blank">Соняшник</a></li>
-</ul>
-</div>
-</div>
-
-<div id="schedule" class="section">
-<div class="card">
-<h2>Розклад</h2>
-<p><a href="https://drive.google.com/drive/folders/1WiA4RmGSrRH29CbrXg14df5JtuYd6TeJ" target="_blank">Переглянути розклад</a></p>
-</div>
-</div>
-
-<div id="collective" class="section">
-<div class="card">
-<h2>Педагогічний колектив</h2>
-<p><a href="https://drive.google.com/drive/folders/1Fwu64LsLkIeybCPFTni-_5DgFPvtBMp7" target="_blank">Переглянути колектив</a></p>
-</div>
-</div>
-
-<div id="inclusive" class="section">
-<div class="card">
-<h2>Інклюзивна освіта</h2>
-<p><a href="https://drive.google.com/drive/folders/10Q-sd76LpOaqeMxjuyNNYUhFwHMz3lRK" target="_blank">Документи з інклюзії</a></p>
-</div>
-</div>
-
-<div id="statut" class="section">
-<div class="card">
-<h2>Статут</h2>
-<p><a href="https://drive.google.com/drive/folders/1fJZhnr-yTZ5Uecl4jdnkuSEDhleSx0dz" target="_blank">Переглянути статут</a></p>
-</div>
-</div>
-
-<div id="orders" class="section">
-<div class="card">
-<h2>Накази</h2>
-<p><a href="https://drive.google.com/drive/folders/1ANR6bzU3viTLAgj2NSY-n6JfDlzs_9mS" target="_blank">Переглянути накази</a></p>
-</div>
-</div>
-
-<div id="attestation" class="section">
-<div class="card">
-<h2>Атестація педагогів</h2>
-<p><a href="https://drive.google.com/drive/folders/1lQD4YsBpRtvemJlvn5xkUHF96TktZL-K" target="_blank">Переглянути атестацію</a></p>
-</div>
-</div>
-
-<div id="admin" class="section">
-<div class="card">
-<h2>Адмін-панель</h2>
-<p>Тут буде керування доступом та папками.</p>
-</div>
-</div>
-
-<footer>© ЗДО «Садочок Ластівка»</footer>
-
-<!-- LOGIN -->
-<div id="login" class="modal">
-<div class="modal-content">
-<h3>Вхід</h3>
-<input id="loginInput" placeholder="Email або код">
-<button onclick="login()">Увійти</button>
-</div>
-</div>
-
 <script>
 let isAdmin = false;
 
@@ -169,16 +69,156 @@ function login(){
         alert("Вихователь");
         document.getElementById('login').style.display='none';
         isAdmin = false;
-    }
-    else if(v==="lisovectana370@gmail.com"){
+    } else if(v==="lisovectana370@gmail.com"){
         alert("Адмін");
         document.querySelectorAll('.admin').forEach(e=>e.classList.remove('hidden'));
         document.getElementById('login').style.display='none';
         isAdmin = true;
+        ['home','news','album','groups','schedule','collective','inclusive','statut','orders','attestation'].forEach(addEditor);
+    } else alert("Невірні дані");
+}
+
+function addEditor(sectionId){
+    if(!isAdmin) return;
+    const section = document.getElementById(sectionId);
+    const editorDiv = document.createElement('div');
+    const textarea = document.createElement('textarea');
+    textarea.placeholder = "Напиши тут текст...";
+    const btn = document.createElement('button');
+    btn.innerText = "Зберегти";
+    btn.className = "saveBtn";
+    btn.onclick = ()=> {
+        alert("Текст збережено на Firebase!"); 
+        // Тут можна підключити Firebase і зберігати
     }
-    else alert("Невірні дані");
+    editorDiv.appendChild(textarea);
+    editorDiv.appendChild(btn);
+    section.appendChild(editorDiv);
+}
+
+// Айді папок Google Drive
+const folders = {
+    news: "1zooffQ541chkyuKTUul2nkPjJDwirvxQ",
+    album: "1IknDuijQtf-RrgZ8PtK89K1W2_tWz6xU",
+    ZIRO: "1NniCYxUD-PQG7C_QRuWc7xw02BMgdagk",
+    KRAP: "1ILclmWrIcnjUO5A0inVl1lFKYr-M0KZ2",
+    SONE: "1IaHJfVHh_g9W55Yc1ZIeGVPBQqsZxdAG",
+    SONY: "1cjb4QtNFRAcVbNB62YaHsp0n8L4r8wzg",
+    PIZ: "1_88DhBgMjTTY9Bnxh-HFlhyIHROHkx5B",
+    CHOM: "16wVHEkqukh9DEyDiaW_QqjnBCH_aWxDn",
+    VES: "1x4hdq03XGAvSasfasuUZDnglTzIGeAtl",
+    BDZ: "1JGMSOMT_J2t3BaH-gb9zfTsBa0Mwcit_",
+    schedule: "1WiA4RmGSrRH29CbrXg14df5JtuYd6TeJ",
+    collective: "1Fwu64LsLkIeybCPFTni-_5DgFPvtBMp7",
+    inclusive: "10Q-sd76LpOaqeMxjuyNNYUhFwHMz3lRK",
+    statut: "1fJZhnr-yTZ5Uecl4jdnkuSEDhleSx0dz",
+    orders: "1ANR6bzU3viTLAgj2NSY-n6JfDlzs_9mS",
+    attestation: "1lQD4YsBpRtvemJlvn5xkUHF96TktZL-K"
+};
+
+function openFolder(id){
+    const url = https://drive.google.com/embeddedfolderview?id=${folders[id]}#grid;
+    window.open(url,'_blank');
 }
 </script>
 
+<!-- Вкладки -->
+<div id="home" class="section active">
+<div class="card">
+<h2>Ласкаво просимо!</h2>
+<p>Офіційний сайт ЗДО «Садочок Ластівка»</p>
+</div>
+</div>
+
+<div id="news" class="section">
+<div class="card">
+<h2>Новини та документи</h2>
+<button onclick="openFolder('news')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="album" class="section">
+<div class="card">
+<h2>Фотоальбом</h2>
+<button onclick="openFolder('album')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="groups" class="section">
+<div class="card">
+<h2>Групи</h2>
+<select onchange="openFolder(this.value)">
+<option value="ZIRO">Зірочки</option>
+<option value="KRAP">Краплинки</option>
+<option value="SONE">Сонечко</option>
+<option value="SONY">Соняшник</option>
+<option value="PIZ">Пізнайко</option>
+<option value="CHOM">Чомусики</option>
+<option value="VES">Веселка</option>
+<option value="BDZ">Бджілки</option>
+</select>
+</div>
+</div>
+
+<div id="schedule" class="section">
+<div class="card">
+<h2>Розклад</h2>
+<button onclick="openFolder('schedule')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="collective" class="section">
+<div class="card">
+<h2>Педагогічний колектив</h2>
+<button onclick="openFolder('collective')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="inclusive" class="section">
+<div class="card">
+<h2>Інклюзія</h2>
+<button onclick="openFolder('inclusive')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="statut" class="section">
+<div class="card">
+<h2>Статут</h2>
+<button onclick="openFolder('statut')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="orders" class="section">
+<div class="card">
+<h2>Накази</h2>
+<button onclick="openFolder('orders')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="attestation" class="section">
+<div class="card">
+<h2>Атестація педагогів</h2>
+<button onclick="openFolder('attestation')">Відкрити папку</button>
+</div>
+</div>
+
+<div id="admin" class="section">
+<div class="card">
+<h2>Адмін-панель</h2>
+<p>Тут можна редагувати вкладки та тексти</p>
+</div>
+</div>
+
+<footer>© ЗДО «Садочок Ластівка»</footer>
+
+<!-- LOGIN -->
+<div id="login" class="modal">
+<div class="modal-content">
+<h3>Вхід</h3>
+<input id="loginInput" placeholder="Email або код">
+<button onclick="login()">Увійти</button>
+</div>
+</div>
+
 </body>
-</html/>
+</html>
