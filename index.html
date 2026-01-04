@@ -1,197 +1,684 @@
+Тьомка:
 <!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ЗДО «Садочок Ластівка»</title>
-<meta name="google-site-verification" content="L3aMoZRFZU0pbWwUjJfPDd5h7hcqdM3p3z4dfj7Qqo4" />
+<!-- Google Site Verification -->
+<meta name="google-site-verification" content="P_PGnGXrv6trG_qsB-Cmy2sOcvHDgtkTqsSBs9FW6N4" />
 
 <style>
-body{margin:0;font-family:Arial;background:#f4fdf7}
-header{background:#2ecc71;color:#fff;padding:15px;text-align:center;position:relative}
-header button{position:absolute;right:15px;top:15px;padding:8px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;cursor:pointer}
-nav{display:flex;flex-wrap:wrap;justify-content:center;background:#27ae60}
-nav button{border:none;background:none;color:#fff;padding:10px 14px;cursor:pointer}
-nav button:hover{background:rgba(255,255,255,.2)}
-.section{display:none;padding:20px}
-.section.active{display:block}
-.card{background:#fff;padding:15px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.1);margin-bottom:15px}
-iframe{width:100%;height:400px;border:none;border-radius:8px;margin-bottom:10px}
-footer{text-align:center;padding:15px;background:#eee}
-.hidden{display:none}
+    :root {
+        --primary: #4a6fa5;
+        --primary-dark: #385d8a;
+        --secondary: #ff9a76;
+        --secondary-dark: #e88a66;
+        --accent: #6dbfb8;
+        --light: #f8f9fa;
+        --light-gray: #e9ecef;
+        --medium-gray: #adb5bd;
+        --dark: #343a40;
+        --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        --radius: 16px;
+        --transition: all 0.3s ease;
+    }
 
-/* login */
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center}
-.modal-content{background:#fff;padding:20px;border-radius:10px;width:300px}
-.modal-content input{width:100%;padding:8px;margin:10px 0}
-button.saveBtn{background:#27ae60;color:#fff;padding:8px 12px;border:none;border-radius:5px;cursor:pointer}
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        color: var(--dark);
+        line-height: 1.6;
+    }
+
+    header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-bottom: 5px solid var(--accent);
+    }
+
+    header h1 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2.2rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    header p {
+        margin: 0;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .header-buttons {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 10px;
+    }
+
+    .header-btn {
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: var(--transition);
+        white-space: nowrap;
+    }
+
+    .header-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: scale(1.05);
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        background: white;
+        padding: 0.5rem;
+        margin: 1.5rem auto;
+        max-width: 1200px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 10px;
+        z-index: 100;
+    }
+
+    .nav-btn {
+        border: none;
+        background: transparent;
+        color: var(--primary-dark);
+        padding: 12px 18px;
+        margin: 4px;
+        cursor: pointer;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition);
+        white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+        background: var(--light-gray);
+        color: var(--primary);
+    }
+
+    .nav-btn.active {
+        background: linear-gradient(to right, var(--primary), var(--accent));
+        color: white;
+        box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 40px;
+    }
+
+    .section {
+        display: none;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .section.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 1.5rem;
+        border-left: 5px solid var(--accent);
+        transition: var(--transition);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .card h2 {
+        margin-top: 0;
+        color: var(--primary);
+        border-bottom: 2px solid var(--light-gray);
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+.post {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid var(--accent);
+    }
+
+    .post.admin-post {
+        border-left-color: #ff9a76;
+        background: #fff9f7;
+    }
+
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .post-author {
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+
+    .post-date {
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+    }
+
+    .post-content {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .post-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 1rem;
+    }
+
+    .action-btn {
+        background: none;
+        border: none;
+        color: var(--medium-gray);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        transition: var(--transition);
+    }
+
+    .action-btn:hover {
+        color: var(--primary);
+    }
+
+    .comment-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--light-gray);
+    }
+
+    .comment {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border-left: 3px solid var(--light-gray);
+    }
+
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .comment-author {
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+
+    .new-post-form, .comment-form {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .form-input, .form-textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid var(--light-gray);
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: var(--transition);
+    }
+
+    .form-textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(109, 191, 184, 0.2);
+    }
+
+    .form-btn {
+        background: linear-gradient(to right, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .form-btn:hover {
+        background: linear-gradient(to right, var(--primary-dark), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+    }
+
+    select {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid var(--light-gray);
+        border-radius: var(--radius);
+        font-size: 1rem;
+        background: white;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a6fa5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 18px;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(109, 191, 184, 0.2);
+    }
+
+.drive-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        background: linear-gradient(to right, var(--primary), var(--primary-dark));
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition);
+        margin-top: 10px;
+        box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+    }
+
+    .drive-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(74, 111, 165, 0.4);
+        background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    }
+
+    footer {
+        text-align: center;
+        padding: 2rem;
+        background: var(--dark);
+        color: white;
+        margin-top: 3rem;
+        border-top: 5px solid var(--accent);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 2.5rem;
+        border-radius: var(--radius);
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        border-top: 6px solid var(--accent);
+    }
+
+    .modal-content h3 {
+        margin-top: 0;
+        color: var(--primary);
+    }
+
+    .modal-input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid var(--light-gray);
+        border-radius: 10px;
+        font-size: 1rem;
+        margin: 15px 0;
+        transition: var(--transition);
+    }
+
+    .modal-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(109, 191, 184, 0.2);
+    }
+
+    .modal-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(to right, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .modal-btn:hover {
+        background: linear-gradient(to right, var(--primary-dark), var(--primary));
+        box-shadow: 0 5px 15px rgba(74, 111, 165, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        header h1 {
+            font-size: 1.8rem;
+        }
+
+        .header-buttons {
+            position: relative;
+            right: auto;
+            top: auto;
+            transform: none;
+            margin-top: 1rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        nav {
+            border-radius: 12px;
+            margin: 1rem;
+            padding: 0.5rem;
+        }
+
+        .nav-btn {
+            padding: 10px 14px;
+            font-size: 0.9rem;
+        }
+
+        .card {
+            padding: 1.5rem;
+        }
+    }
 </style>
 </head>
 <body>
 
 <header>
-<h1>ЗДО «Садочок Ластівка»</h1>
-<p>Офіційний сайт</p>
-<button onclick="openLogin()">Увійти</button>
+    <h1>ЗДО «Садочок Ластівка»</h1>
+    <p>Офіційний сайт дитячого садка</p>
+    <div class="header-buttons">
+        <button class="header-btn" onclick="openEducatorLogin()">Вхід для вихователів</button>
+        <button class="header-btn" onclick="openAdminLogin()">Вхід для адміністратора</button>
+    </div>
 </header>
 
 <nav>
-<button onclick="openTab('home')">Головна</button>
-<button onclick="openTab('news')">Новини</button>
-<button onclick="openTab('album')">Фотоальбом</button>
-<button onclick="openTab('groups')">Групи</button>
-<button onclick="openTab('schedule')">Розклад</button>
-<button onclick="openTab('collective')">Педколектив</button>
-<button onclick="openTab('inclusive')">Інклюзія</button>
-<button onclick="openTab('statut')">Статут</button>
-<button onclick="openTab('orders')">Накази</button>
-<button class="admin hidden" onclick="openTab('attestation')">Атестація</button>
-<button class="admin hidden" onclick="openTab('admin')">Адмінка</button>
+    <button class="nav-btn active" onclick="openTab('home')">Головна</button>
+    <button class="nav-btn" onclick="openTab('news')">Новини</button>
+    <button class="nav-btn" onclick="openTab('album')">Фотоальбом</button>
+    <button class="nav-btn" onclick="openTab('groups')">Групи</button>
+    <button class="nav-btn" onclick="openTab('schedule')">Розклад</button>
+
+<button class="nav-btn" onclick="openTab('collective')">Педколектив</button>
+    <button class="nav-btn" onclick="openTab('inclusive')">Інклюзія</button>
+    <button class="nav-btn" onclick="openTab('statut')">Статут</button>
+    <button class="nav-btn" onclick="openTab('orders')">Накази</button>
+    <button class="nav-btn educator hidden" onclick="openTab('educator')">Для вихователів</button>
+    <button class="nav-btn admin hidden" onclick="openTab('admin')">Адмін-панель</button>
 </nav>
 
-<!-- Вкладки -->
-<div id="home" class="section active">
-<div class="card">
-<h2>Ласкаво просимо!</h2>
-<p>Офіційний сайт ЗДО «Садочок Ластівка»</p>
-</div>
-</div>
-
-<div id="news" class="section">
-<div class="card">
-<h2>Новини та документи</h2>
-<a href="https://drive.google.com/drive/folders/1zooffQ541chkyuKTUul2nkPjJDwirvxQ" target="_blank">Відкрити папку</a>
-</div>
-</div>
-
-<div id="album" class="section">
-<div class="card">
-<h2>Фотоальбом</h2>
-<a href="https://drive.google.com/drive/folders/1IknDuijQtf-RrgZ8PtK89K1W2_tWz6xU" target="_blank">Відкрити папку</a>
-</div>
-</div>
-
-<div id="groups" class="section">
-<div class="card">
-<h2>Групи</h2>
-<select onchange="loadGroup(this.value)">
-<option value="BDZ">Бджілки</option>
-<option value="VES">Веселка</option>
-<option value="ZIRO">Зірочки</option>
-<option value="KRAP">Краплинки</option>
-<option value="PIZ">Пізнайко</option>
-<option value="SONE">Сонечко</option>
-<option value="CHOM">Чомусики</option>
-<option value="SONY">Соняшник</option>
-</select>
-<br>
-<a id="groupLink" href="#" target="_blank">Відкрити вибрану групу</a>
-</div>
-</div>
-
-<div id="schedule" class="section">
-<div class="card">
-<h2>Розклад занять</h2>
-<a href="https://drive.google.com/drive/folders/1WiA4RmGSrRH29CbrXg14df5JtuYd6TeJ" target="_blank">Відкрити папку</a>
-</div>
-</div>
-
-<div id="collective" class="section">
-<div class="card">
-<h2>Педагогічний колектив</h2>
-<a href="https://drive.google.com/drive/folders/1Fwu64LsLkIeybCPFTni-_5DgFPvtBMp7" target="_blank">Відкрити папку</a>
-</div>
-</div>
-
-<div id="inclusive" class="section">
-<div class="card">
-<h2>Інклюзивна освіта</h2>
-<a href="https://drive.google.com/drive/folders/10Q-sd76LpOaqeMxjuyNNYUhFwHMz3lRK" target="_blank">Відкрити папку</a>
-</div>
+<div class="container">
+    <!-- Вкладки -->
+    <div id="home" class="section active">
+        <div class="card">
+            <h2>Ласкаво просимо!</h2>
+            <p>Ми раді вітати вас на офіційному сайті закладу дошкільної освіти «Садочок Ластівка». Тут ви знайдете всю необхідну інформацію про наш садочок, новини, розклад, фото та документи.</p>
+            <p>Наші цілі — гармонійний розвиток дітей, створення затишного середовища та підтримка батьків у вихованні.</p>
+        </div>
+        <div class="card">
+            <h2>Останні новини</h2>
+            <div id="newsFeed"></div>
+        </div>
     </div>
+
+    <div id="news" class="section">
+        <div class="card">
+            <h2>Новини та оголошення</h2>
+            <div id="newsContent"></div>
+            <div id="newsPosts"></div>
+        </div>
+    </div>
+
+    <div id="album" class="section">
+        <div class="card">
+            <h2>Фотоальбом</h2>
+            <div id="albumContent"></div>
+        </div>
+    </div>
+
+    <div id="groups" class="section">
+        <div class="card">
+            <h2>Групи нашого садочка</h2>
+            <select onchange="loadGroup(this.value)">
+                <option value="BDZ">🍯 Бджілки</option>
+                <option value="VES">🌈 Веселка</option>
+                <option value="ZIRO">⭐ Зірочки</option>
+                <option value="KRAP">💧 Краплинки</option>
+                <option value="PIZ">🔍 Пізнайко</option>
+                <option value="SONE">☀️ Сонечко</option>
+                <option value="CHOM">❓ Чомусики</option>
+                <option value="SONY">🌻 Соняшник</option>
+            </select>
+            <div id="groupContent"></div>
+        </div>
+    </div>
+
+    <div id="schedule" class="section">
+        <div class="card">
+            <h2>Розклад занять</h2>
+            <div id="scheduleContent"></div>
+        </div>
+    </div>
+
+    <div id="collective" class="section">
+        <div class="card">
+            <h2>Педагогічний колектив</h2>
+            <div id="collectiveContent"></div>
+        </div>
+    </div>
+
+    <div id="inclusive" class="section">
+        <div class="card">
+            <h2>Інклюзивна освіта</h2>
+            <div id="inclusiveContent"></div>
+        </div>
+    </div>
+
     <div id="statut" class="section">
-<div class="card">
-<h2>Статут</h2>
-<a href="https://drive.google.com/drive/folders/1fJZhnr-yTZ5Uecl4jdnkuSEDhleSx0dz" target="_blank">Відкрити папку</a>
-</div>
+        <div class="card">
+            <h2>Статут закладу</h2>
+            <div id="statutContent"></div>
+        </div>
+    </div>
+
+    <div id="orders" class="section">
+        <div class="card">
+            <h2>Накази та розпорядження</h2>
+            <div id="ordersContent"></div>
+        </div>
+    </div>
+
+    <div id="educator" class="section">
+        <div class="card">
+            <h2>Спілкування для вихователів</h2>
+            <div id="educatorPosts"></div>
+            <div class="comment-form" id="educatorCommentForm">
+                <div class="form-group">
+                    <label class="form-label">Додати коментар:</label>
+                    <textarea class="form-textarea" id="educatorComment" placeholder="Напишіть ваш коментар..."></textarea>
+                </div>
+                <button class="form-btn" onclick="addEducatorComment()">Опублікувати коментар</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin" class="section">
+        <div class="card">
+            <h2>Адміністративна панель</h2>
+
+<div class="new-post-form">
+                <h3>Створити нову новину</h3>
+                <div class="form-group">
+                    <label class="form-label">Заголовок:</label>
+                    <input type="text" class="form-input" id="postTitle" placeholder="Введіть заголовок новини">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Текст новини:</label>
+                    <textarea class="form-textarea" id="postContent" placeholder="Введіть текст новини..."></textarea>
+                </div>
+                <button class="form-btn" onclick="createPost()">Опублікувати новину</button>
+            </div>
+
+            <div class="new-post-form" style="margin-top: 2rem;">
+                <h3>Керування контентом</h3>
+                <button class="form-btn" onclick="clearAllPosts()" style="background: #dc3545; margin-right: 10px;">Видалити всі новини</button>
+                <button class="form-btn" onclick="loadAllPosts()">Оновити список</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="orders" class="section">
-<div class="card">
-<h2>Накази</h2>
-<a href="https://drive.google.com/drive/folders/1ANR6bzU3viTLAgj2NSY-n6JfDlzs_9mS" target="_blank">Відкрити папку</a>
-</div>
+<footer>
+    <p>© 2023 ЗДО «Садочок Ластівка». Усі права захищено.</p>
+    <p style="opacity:0.8; font-size:0.9rem;">Офіційний сайт закладу дошкільної освіти</p>
+</footer>
+
+<!-- Модальне вікно входу для адміністратора -->
+<div id="adminLogin" class="modal">
+    <div class="modal-content">
+        <h3>Вхід для адміністратора</h3>
+        <input id="adminInput" class="modal-input" placeholder="Введіть email адміністратора" type="email">
+        <button class="modal-btn" onclick="adminLogin()">Увійти</button>
+        <p style="margin-top:15px; font-size:0.9rem; color:var(--medium-gray);">Адміністратор: lisovectana370@gmail.com</p>
+    </div>
 </div>
 
-<div id="attestation" class="section">
-<div class="card">
-<h2>Атестація педагогів</h2>
-<a href="https://drive.google.com/drive/folders/1lQD4YsBpRtvemJlvn5xkUHF96TktZL-K" target="_blank">Відкрити папку</a>
-</div>
-</div>
-
-<div id="admin" class="section">
-<div class="card">
-<h2>Адмін-панель</h2>
-<p>Керування доступом та папками</p>
-</div>
-</div>
-
-<footer>© ЗДО «Садочок Ластівка»</footer>
-
-<!-- LOGIN -->
-<div id="login" class="modal">
-<div class="modal-content">
-<h3>Вхід</h3>
-<input id="loginInput" placeholder="Email або код">
-<button onclick="login()">Увійти</button>
-</div>
+<!-- Модальне вікно входу для вихователів -->
+<div id="educatorLogin" class="modal">
+    <div class="modal-content">
+        <h3>Вхід для вихователів</h3>
+        <div class="form-group">
+            <label class="form-label">Ваше ім'я:</label>
+            <input id="educatorName" class="modal-input" placeholder="Введіть ваше ім'я">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Група:</label>
+            <select id="educatorGroup" class="modal-input">
+                <option value="Бджілки">🍯 Бджілки</option>
+                <option value="Веселка">🌈 Веселка</option>
+                <option value="Зірочки">⭐ Зірочки</option>
+                <option value="Краплинки">💧 Краплинки</option>
+                <option value="Пізнайко">🔍 Пізнайко</option>
+                <option value="Сонечко">☀️ Сонечко</option>
+                <option value="Чомусики">❓ Чомусики</option>
+                <option value="Соняшник">🌻 Соняшник</option>
+            </select>
+        </div>
+        <button class="modal-btn" onclick="educatorLogin()">Увійти</button>
+    </div>
 </div>
 
 <script>
-let isAdmin = false;
+    let currentUser = null;
+    let isAdmin = false;
+    let isEducator = false;
+    
+    const folders = {
+        "news":"1zooffQ541chkyuKTUul2nkPjJDwirvxQ",
+        "album":"1IknDuijQtf-RrgZ8PtK89K1W2_tWz6xU",
+        "schedule":"1WiA4RmGSrRH29CbrXg14df5JtuYd6TeJ",
+        "collective":"1Fwu64LsLkIeybCPFTni-_5DgFPvtBMp7",
+        "inclusive":"10Q-sd76LpOaqeMxjuyNNYUhFwHMz3lRK",
+        "statut":"1fJZhnr-yTZ5Uecl4jdnkuSEDhleSx0dz",
+        "orders":"1ANR6bzU3viTLAgj2NSY-n6JfDlzs_9mS",
+        "BDZ":"1JGMSOMT_J2t3BaH-gb9zfTsBa0Mwcit_",
+        "VES":"1x4hdq03XGAvSasfasuUZDnglTzIGeAtl",
+        "ZIRO":"1NniCYxUD-PQG7C_QRuWc7xw02BMgdagk",
+        "KRAP":"1ILclmWrIcnjUO5A0inVl1lFKYr-M0KZ2",
+        "PIZ":"1_88DhBgMjTTY9Bnxh-HFlhyIHROHkx5B",
+        "SONE":"1IaHJfVHh_g9W55Yc1ZIeGVPBQqsZxdAG",
+        "CHOM":"16wVHEkqukh9DEyDiaW_QqjnBCH_aWxDn",
+        "SONY":"1cjb4QtNFRAcVbNB62YaHsp0n8L4r8wzg"
+    };
 
-function openTab(id){
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
+    // Пости та коментарі (в реальному застосунку буде зберігатися на сервері)
+    let posts = JSON.parse(localStorage.getItem('sadocok_posts')) || [];
+    let educatorComments = JSON.parse(localStorage.getItem('sadocok_educator_comments')) || [];
 
-function openLogin(){document.getElementById('login').style.display='flex'}
-
-function login(){
-    let v=document.getElementById('loginInput').value;
-    if(v==="1980"){
-        alert("Вихователь");
-        document.getElementById('login').style.display='none';
-        isAdmin = false;
-    }
-    else if(v==="lisovectana370@gmail.com"){
-        alert("Адмін");
-        document.querySelectorAll('.admin').forEach(e=>e.classList.remove('hidden'));
-        document.getElementById('login').style.display='none';
-        isAdmin = true;
-    }
-    else alert("Невірні дані");
-}
-
-// Групи
-const groups={
-BDZ:"https://drive.google.com/drive/folders/1JGMSOMT_J2t3BaH-gb9zfTsBa0Mwcit_",
-VES:"https://drive.google.com/drive/folders/1x4hdq03XGAvSasfasuUZDnglTzIGeAtl",
-ZIRO:"https://drive.google.com/drive/folders/1NniCYxUD-PQG7C_QRuWc7xw02BMgdagk",
-KRAP:"https://drive.google.com/drive/folders/1ILclmWrIcnjUO5A0inVl1lFKYr-M0KZ2",
-PIZ:"https://drive.google.com/drive/folders/1_88DhBgMjTTY9Bnxh-HFlhyIHROHkx5B",
-SONE:"https://drive.google.com/drive/folders/1IaHJfVHh_g9W55Yc1ZIeGVPBQqsZxdAG",
-CHOM:"https://drive.google.com/drive/folders/16wVHEkqukh9DEyDiaW_QqjnBCH_aWxDn",
-SONY:"https://drive.google.com/drive/folders/1cjb4QtNFRAcVbNB62YaHsp0n8L4r8wzg"
-};
-
-function loadGroup(key){
-    const link = groups[key];
-    document.getElementById('groupLink').href = link;
-}
-loadGroup("BDZ");
-</script>
-
-</body>
-</html>
+function openTab(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
